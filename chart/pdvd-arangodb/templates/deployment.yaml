@@ -2,22 +2,22 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "pdvd-arangodb.name" . }}
+  name: {{ include "microservice.name". }}
 spec:
   replicas: {{ .Values.replicaCount }}
   updateStrategy:
     type: RollingUpdate
-  serviceName: {{ include "pdvd-arangodb.name" . }}
+  serviceName: {{ include "microservice.name". }}
   selector:
     matchLabels:
-      app:  {{ include "pdvd-arangodb.name" . }}
+      app:  {{ include "microservice.name". }}
   template:
     metadata:
       labels:
-        app: {{ include "pdvd-arangodb.name" . }}
+        app: {{ include "microservice.name". }}
     spec:
       containers:
-        - name: {{ include "pdvd-arangodb.name" . }}
+        - name: {{ include "microservice.name". }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
