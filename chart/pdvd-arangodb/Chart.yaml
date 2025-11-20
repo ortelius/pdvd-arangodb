@@ -1,0 +1,7 @@
+apiVersion: v2
+description: Arango Statefulset
+icon: https://ortelius.github.io/pdvd-charts/ortelius.svg
+name: pdvd-arangodb
+type: application
+version: 12.0.0
+appVersion: 12.0.0
