@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -33,33 +32,20 @@ spec:
             mountPath: /var/lib/arangodb3
           - name: arangoappsdata
             mountPath: /var/lib/arangodb3-apps
-      {{ if not (and (contains "gke" (.Capabilities.KubeVersion.Version | toString)) (contains "eks" (.Capabilities.KubeVersion.Version | toString))) }}
-      volumes:
-      - name: arangodata
-        hostPath:
-          type: DirectoryOrCreate
-          path: /arangodata  # matches kind containerPath in Kind Cluster.yaml
-      - name: arangoappsdata
-        hostPath:
-          type: DirectoryOrCreate
-          path: /arangoappsdata  # matches kind containerPath in Kind Cluster.yaml
-      {{ end }}
-  {{ if or (contains "gke" (.Capabilities.KubeVersion.Version | toString)) (contains "eks" (.Capabilities.KubeVersion.Version | toString)) }}
-  volumeClaimTemplates:
-  - metadata:
-      name: arangodata
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "ortelius-sc"
-      resources:
-        requests:
-          storage: 100Gi
-  - metadata:
-      name: arangoappsdata
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "ortelius-sc"
-      resources:
-        requests:
-          storage: 10Gi
-  {{ end }}
+      volumeClaimTemplates:
+      - metadata:
+          name: arangodata
+        spec:
+          accessModes: [ "ReadWriteOnce" ]
+          storageClassName: "ortelius-sc"
+          resources:
+            requests:
+              storage: 10Gi
+      - metadata:
+          name: arangoappsdata
+        spec:
+          accessModes: [ "ReadWriteOnce" ]
+          storageClassName: "ortelius-sc"
+          resources:
+            requests:
+              storage: 1Gi

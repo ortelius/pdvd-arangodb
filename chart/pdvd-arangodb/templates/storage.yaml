@@ -36,7 +36,7 @@ metadata:
   name: ortelius-sc
 # Ensure the Local Path Provisioner is installed in your k0s cluster
 provisioner: rancher.io/local-path 
-reclaimPolicy: Delete
+reclaimPolicy: Retain
 volumeBindingMode: WaitForFirstConsumer
 allowVolumeExpansion: true
 {{- end }}
