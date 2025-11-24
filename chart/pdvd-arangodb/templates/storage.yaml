@@ -1,9 +1,9 @@
-{{- if or (contains "gke" (.Capabilities.KubeVersion.Version | toString)) (contains "eks" (.Capabilities.KubeVersion.Version | toString)) }}
+# Start the conditional rendering. Only ONE of these blocks will be executed.
+{{- if contains "eks" (.Capabilities.KubeVersion.Version | toString) }}
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: ortelius-sc
-{{- if contains "eks" (.Capabilities.KubeVersion.Version | toString) }}
 provisioner: ebs.csi.aws.com
 parameters:
   type: gp3
@@ -12,8 +12,12 @@ parameters:
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer
-{{- end }}
-{{- if contains "gke" (.Capabilities.KubeVersion.Version | toString) }}
+
+{{- else if contains "gke" (.Capabilities.KubeVersion.Version | toString) }}
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ortelius-sc
 provisioner: pd.csi.storage.gke.io
 allowVolumeExpansion: true
 parameters:
@@ -21,5 +25,18 @@ parameters:
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer
+
+{{- else }}
+# --- Bare-Metal/k0s Configuration (Default Fallback) ---
+# This block is executed if the environment is neither EKS nor GKE (e.g., k0s, Kind, Minikube).
+# It relies on the Local Path Provisioner being installed.
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ortelius-sc
+# Ensure the Local Path Provisioner is installed in your k0s cluster
+provisioner: rancher.io/local-path 
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
 {{- end }}
-{{ end }}
