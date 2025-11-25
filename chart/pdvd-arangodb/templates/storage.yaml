@@ -3,7 +3,7 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: ortelius-sc
+  name: pdvd-sc
 provisioner: ebs.csi.aws.com
 parameters:
   type: gp3
@@ -17,7 +17,7 @@ volumeBindingMode: WaitForFirstConsumer
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: ortelius-sc
+  name: pdvd-sc
 provisioner: pd.csi.storage.gke.io
 allowVolumeExpansion: true
 parameters:
