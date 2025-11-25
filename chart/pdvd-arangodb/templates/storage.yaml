@@ -25,18 +25,4 @@ parameters:
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer
-
-{{- else }}
-# --- Bare-Metal/k0s Configuration (Default Fallback) ---
-# This block is executed if the environment is neither EKS nor GKE (e.g., k0s, Kind, Minikube).
-# It relies on the Local Path Provisioner being installed.
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: ortelius-sc
-# Ensure the Local Path Provisioner is installed in your k0s cluster
-provisioner: rancher.io/local-path 
-reclaimPolicy: Retain
-volumeBindingMode: WaitForFirstConsumer
-allowVolumeExpansion: true
 {{- end }}
