@@ -1,4 +1,4 @@
 replicaCount: 1
 image:
   repository: arangodb
-  tag: 3.12
+  tag: 3.12.6
